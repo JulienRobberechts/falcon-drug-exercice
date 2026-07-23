@@ -35,8 +35,8 @@
 
 ## Phase 2 — Tests unitaires complets (avant refactor)
 
-- [ ] Ajouter une courte ADR dans `docs/adr/` documentant le choix de faire des tests unitaires sur les cas limites. — **ADR02**
-- [ ] Écrire des tests ciblés par drogue et cas limite, sur le comportement actuel (pour sécuriser le refactor) :
+- [x] Ajouter une courte ADR dans `docs/adr/` documentant le choix de faire des tests unitaires sur les cas limites. — **ADR02**
+- [x] Écrire des tests ciblés par drogue et cas limite, sur le comportement actuel (pour sécuriser le refactor) :
   - Drogue normale : dégradation -1/-1, jamais négative.
   - Drogue normale expirée : dégradation -2 sur benefit.
   - Herbal Tea : benefit augmente, plafonné à 50, +2 après expiration.
