@@ -29,9 +29,9 @@
 
 ## Phase 1 — Baseline & garde-fou anti-régression
 
-- [ ] Vérifier que `yarn test` et `yarn lint` passent sur le code actuel (déjà confirmé OK).
-- [ ] Régénérer avec `yarn test` et constater que le fichier `output.json` n'est pas modifié. Cela confirme que le fichier `output.json` est bien aligné avec le code actuel.
-- [ ] Ajouter des tests de non-régression : générer un output à partir des 4 drogues existantes (Doliprane, Herbal Tea, Fervex, Magic Pill) sur 30 jours et le comparer au contenu figé de `output.json` (copié en fixture, ex. `__fixtures__/output.baseline.json`). Ce test doit passer **avant** tout refactor. — **ADR01**
+- [x] Vérifier que `yarn test` et `yarn lint` passent sur le code actuel (déjà confirmé OK).
+- [x] Régénérer avec `yarn test` et constater que le fichier `output.json` n'est pas modifié. Cela confirme que le fichier `output.json` est bien aligné avec le code actuel.
+- [x] Ajouter des tests de non-régression : un test par drogue existante (Doliprane, Herbal Tea, Fervex, Magic Pill), comparant l'historique complet sur 30 jours au contenu figé de `output.json`. Ce test doit passer **avant** tout refactor. — **ADR01**
 
 ## Phase 2 — Tests unitaires complets (avant refactor)
 
