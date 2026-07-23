@@ -25,7 +25,7 @@ We have recently signed a supplier of "Dafalgan". This requires an update to our
 
 ## Instructions
 
-- [ ] Create a clone from this repository
+- [x] Create a clone from this repository
 - [ ] Implement the required feature
 - [ ] Push the clone to your own repository when satisfied
 - [ ] Send us the link and tell us approximatively how much time you spent on this assignment
