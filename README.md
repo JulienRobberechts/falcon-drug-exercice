@@ -1,3 +1,25 @@
+## Notes - Julien
+
+Transparence sur l'usage de l'IA : ce travail a été réalisé avec l'aide de Claude Code, utilisé comme je le ferais en situation réelle.
+
+- Le plan de refactoring a été proposé par Claude, puis revu et ajusté par mes soins avant l'implémentation.
+- L'implémentation a été en grande partie générée par Claude, sous ma supervision : chaque étape a été validée par les tests de régression et relue avant commit.
+- Je maîtrise l'ensemble des choix techniques (documentés dans les ADR) et serai ravi de les défendre et d'en discuter lors d'un échange.
+
+Démarche suivie :
+
+- **Sécurisation** : suite de tests de régression avant tout refactoring (baseline générée depuis `output.json` + cas limites des règles métier).
+- **Refactoring incrémental** : extraction de handlers par médicament, puis passage à un modèle déclaratif — chaque médicament est décrit par des règles de données (deltas de benefit avant/après expiration, delta d'`expiresIn`) appliquées par une unique méthode `Drug.update()`. L'API publique de `Drug` et `Pharmacy` reste inchangée.
+- **Ajout de "Dafalgan"** : se résume à une simple entrée de configuration.
+
+Nouveaux fichiers :
+
+- les fichiers de tests ont été déplacés dans `tests`
+- `docs/refac-steps.md` — plan de refactoring
+- `docs/adr/ADR01` à `ADR04` — décisions de design pour historique.
+
+Merci beaucoup aux développeurs et développeuses qui prendront le temps de relire ce travail — bonne lecture, et n'hésitez pas à me faire part de vos retours !
+
 # Take-Home Test Specification
 
 You are a new developer in the Falcon team, and your first job is to add a feature to an old existing piece of code.
