@@ -1,3 +1,5 @@
+[![CI](https://github.com/JulienRobberechts/falcon-drug-exercice/actions/workflows/ci.yml/badge.svg)](https://github.com/JulienRobberechts/falcon-drug-exercice/actions/workflows/ci.yml)
+
 ## Notes - Julien
 
 Transparence sur l'usage de l'IA : ce travail a été réalisé avec l'aide de Claude Code, utilisé comme je le ferais en situation réelle.
