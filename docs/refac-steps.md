@@ -85,8 +85,8 @@ Interprétation retenue pour l'exercice : la dégradation "2x plus vite" de Dafa
 
 ## Phase 5 — Implémentation de Dafalgan
 
-- [ ] Créer des tests pour Dafalgan qui reprennent les 3 cas (-2/jour avant expiration, -4/jour après, jamais négatif).
-- [ ] Implémentation :
+- [x] Créer des tests pour Dafalgan qui reprennent les 3 cas (-2/jour avant expiration, -4/jour après, jamais négatif).
+- [x] Implémentation :
   1. Ajouter une instance `new Drug("Dafalgan", ...)` dans `index.js`, **à la fin** du tableau `drugs`, pour ne pas décaler les entrées existantes dans `output.json`.
   2. Ajouter la règle Dafalgan dans la logique refactorée.
   3. Régénérer `output.json` via `yarn start` et vérifier que les 4 premières entrées de chaque jour sont inchangées, seule une 5e entrée (Dafalgan) apparaît.

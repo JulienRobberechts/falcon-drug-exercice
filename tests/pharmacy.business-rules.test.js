@@ -76,4 +76,21 @@ describe("Pharmacy (règles métier par drogue et cas limites)", () => {
       expect(drug).toEqual(new Drug(DRUG_NAMES.MAGIC_PILL, 15, 40));
     });
   });
+
+  describe("Dafalgan", () => {
+    it("diminue expiresIn de 1 et benefit de 2 par jour avant expiration", () => {
+      const drug = update(new Drug(DRUG_NAMES.DAFALGAN, 10, 20));
+      expect(drug).toEqual(new Drug(DRUG_NAMES.DAFALGAN, 9, 18));
+    });
+
+    it("dégrade le benefit 2x plus vite une fois expirée (soit -4/jour)", () => {
+      const drug = update(new Drug(DRUG_NAMES.DAFALGAN, 0, 10));
+      expect(drug.benefit).toBe(6);
+    });
+
+    it("ne descend jamais sous 0", () => {
+      const drug = update(new Drug(DRUG_NAMES.DAFALGAN, 5, 0));
+      expect(drug.benefit).toBe(0);
+    });
+  });
 });

@@ -8,6 +8,7 @@ export const DRUG_NAMES = {
   HERBAL_TEA: "Herbal Tea",
   FERVEX: "Fervex",
   MAGIC_PILL: "Magic Pill",
+  DAFALGAN: "Dafalgan",
 };
 
 const DEFAULT_RULE = { getBenefitDelta: () => -1, expiresInDelta: -1 };
@@ -24,6 +25,7 @@ const DRUG_RULES = {
     onExpired: () => 0,
   },
   [DRUG_NAMES.MAGIC_PILL]: { getBenefitDelta: () => 0, expiresInDelta: 0 },
+  [DRUG_NAMES.DAFALGAN]: { getBenefitDelta: () => -2, expiresInDelta: -1 },
 };
 
 export class Drug {
