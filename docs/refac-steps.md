@@ -59,17 +59,19 @@ Objectif : sortir de la pyramide de `if` imbriqués sans changer le comportement
 
 ## Phase 4 — Confirmation des spécifications du Dafalgan
 
-La spec dit :
-- For all drugs, at the end of each day our system lowers both values for every drug.
-- "Dafalgan" degrades in Benefit twice as fast as normal drugs.
+La spec contient deux règles qui se recoupent sur Dafalgan, d'où une ambiguïté à lever avant implémentation :
 
-Il n'est pas certain que la base d'un médicament "normal" soit un décrément de 1. Il faudrait le confirmer. Pour l'exercice nous allons assumer cela.
+1. Base normale :
+   - For all drugs, at the end of each day our system lowers both values for every drug.
+   - "Dafalgan" degrades in Benefit twice as fast as normal drugs.
 
-La spec dit également :
-- Once the expiration date has passed, Benefit degrades twice as fast.
-- "Dafalgan" degrades in Benefit twice as fast as normal drugs.
+   Cela suppose que le décrément de base d'une drogue "normale" est de 1/jour. Ce point n'est pas garanti par la spec ; nous le prenons comme hypothèse de travail pour l'exercice.
 
-Est-ce que cela signifie que pour Dafalgan expirée, la dégradation est de -4/jour ?
+2. Règle d'expiration :
+   - Once the expiration date has passed, Benefit degrades twice as fast.
+   - "Dafalgan" degrades in Benefit twice as fast as normal drugs.
+
+   Question ouverte : une fois expirée, les deux règles "2x plus vite" se cumulent-elles pour Dafalgan (-4/jour), ou s'excluent-elles (-2/jour) ?
 
 ### Nouvelle spécification (à valider avec le produit)
 
