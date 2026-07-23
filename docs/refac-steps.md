@@ -1,108 +1,108 @@
 # Plan — Take-Home Test (Pharmacy)
 
-## 0. Contraintes à respecter (extraites du README)
+## 0. Constraints to respect (extracted from the README)
 
-### Règles métier
+### Business rules
 
-- Chaque jour : `expiresIn` -1 et `benefit` -1 (règle par défaut, drogue "normale").
-- Une fois expirée (`expiresIn < 0`) : le `benefit` dégrade **2x plus vite**.
-- `benefit` jamais négatif, jamais > 50.
-- **Herbal Tea** : `benefit` augmente avec l'âge (au lieu de diminuer), 2x plus vite une fois expirée.
-- **Magic Pill** : n'expire jamais (`expiresIn` fixe), `benefit` ne bouge jamais.
-- **Fervex** : `benefit` augmente à l'approche de l'expiration (+1 base, +1 supplémentaire si `expiresIn <= 10`, +1 supplémentaire si `expiresIn <= 5`, soit +2 et +3 au total) ; tombe à 0 dès que expirée.
-- **Dafalgan** (nouveau) : dégrade 2x plus vite qu'une drogue normale → -2/jour avant expiration, -4/jour après expiration (règle "expiré = 2x plus vite" s'applique par-dessus).
+- Every day: `expiresIn` -1 and `benefit` -1 (default rule, "normal" drug).
+- Once expired (`expiresIn < 0`): `benefit` degrades **2x faster**.
+- `benefit` never negative, never > 50.
+- **Herbal Tea**: `benefit` increases with age (instead of decreasing), 2x faster once expired.
+- **Magic Pill**: never expires (`expiresIn` fixed), `benefit` never moves.
+- **Fervex**: `benefit` increases as expiration approaches (+1 base, +1 extra if `expiresIn <= 10`, +1 extra if `expiresIn <= 5`, i.e. +2 and +3 total); drops to 0 as soon as expired.
+- **Dafalgan** (new): degrades 2x faster than a normal drug → -2/day before expiration, -4/day after expiration (the "expired = 2x faster" rule applies on top).
 
-### Contraintes techniques
+### Technical constraints
 
-- Ne pas casser l'API publique de `Drug` et `Pharmacy` (signatures de constructeur, propriétés `name`/`expiresIn`/`benefit`, méthode `updateBenefitValue()`). Ajout de nouvelles méthodes autorisé.
-- Liberté totale sur l'implémentation interne de `updateBenefitValue`.
-- `output.json` doit rester généré à l'identique pour les drogues existantes (Doliprane, Herbal Tea, Fervex, Magic Pill) — ne pas modifier l'ordre ni les valeurs initiales de ces 4 entrées dans `index.js`. Dafalgan doit être **ajoutée**, pas substituée.
-- Commits fréquents et atomiques (facilite la review).
-- Temps max recommandé : 2h. Indiquer le temps réel passé à la fin.
-- Push vers un dépôt perso + partager le lien.
+- Do not break the public API of `Drug` and `Pharmacy` (constructor signatures, `name`/`expiresIn`/`benefit` properties, `updateBenefitValue()` method). Adding new methods is allowed.
+- Full freedom on the internal implementation of `updateBenefitValue`.
+- `output.json` must keep generating identically for the existing drugs (Doliprane, Herbal Tea, Fervex, Magic Pill) — do not change the order or initial values of these 4 entries in `index.js`. Dafalgan must be **added**, not substituted.
+- Frequent, atomic commits (makes review easier).
+- Recommended max time: 2h. Report the actual time spent at the end.
+- Push to a personal repo + share the link.
 
-### Questions non résolues
+### Open questions
 
-- Aucune ambiguïté bloquante dans les règles ; seul point d'interprétation : Dafalgan expirée dégrade -4/jour (2x la règle "expiré" normale), à confirmer si besoin avec l'équipe Falcon.
+- No blocking ambiguity in the rules; the only point of interpretation: expired Dafalgan degrades -4/day (2x the normal "expired" rule), to confirm with the Falcon team if needed.
 
 ---
 
-## Phase 1 — Baseline & garde-fou anti-régression
+## Phase 1 — Baseline & anti-regression safety net
 
-- [x] Vérifier que `yarn test` et `yarn lint` passent sur le code actuel (déjà confirmé OK).
-- [x] Régénérer avec `yarn test` et constater que le fichier `output.json` n'est pas modifié. Cela confirme que le fichier `output.json` est bien aligné avec le code actuel.
-- [x] Ajouter des tests de non-régression : un test par drogue existante (Doliprane, Herbal Tea, Fervex, Magic Pill), comparant l'historique complet sur 30 jours au contenu figé de `output.json`. Ce test doit passer **avant** tout refactor. — **ADR01**
+- [x] Verify that `yarn test` and `yarn lint` pass on the current code (already confirmed OK).
+- [x] Regenerate with `yarn test` and confirm that `output.json` is not modified. This confirms `output.json` is aligned with the current code.
+- [x] Add non-regression tests: one test per existing drug (Doliprane, Herbal Tea, Fervex, Magic Pill), comparing the full 30-day history against the frozen content of `output.json`. This test must pass **before** any refactor. — **ADR01**
 
-## Phase 2 — Tests unitaires complets (avant refactor)
+## Phase 2 — Full unit tests (before refactor)
 
-- [x] Ajouter une courte ADR dans `docs/adr/` documentant le choix de faire des tests unitaires sur les cas limites. — **ADR02**
-- [x] Écrire des tests ciblés par drogue et cas limite, sur le comportement actuel (pour sécuriser le refactor) :
-  - Drogue normale : dégradation -1/-1, jamais négative.
-  - Drogue normale expirée : dégradation -2 sur benefit.
-  - Herbal Tea : benefit augmente, plafonné à 50, +2 après expiration.
-  - Fervex : +1 normal, +2 si `expiresIn <= 10`, +3 si `expiresIn <= 5`, chute à 0 après expiration, plafonné à 50.
-  - Magic Pill : `expiresIn` et `benefit` inchangés après N appels.
-  - Cas limites : benefit à 0 (ne descend pas sous 0), benefit à 50 (ne monte pas au-dessus).
+- [x] Add a short ADR in `docs/adr/` documenting the choice to write unit tests for edge cases. — **ADR02**
+- [x] Write targeted tests per drug and edge case, on the current behavior (to safeguard the refactor):
+  - Normal drug: -1/-1 degradation, never negative.
+  - Expired normal drug: -2 degradation on benefit.
+  - Herbal Tea: benefit increases, capped at 50, +2 after expiration.
+  - Fervex: +1 normal, +2 if `expiresIn <= 10`, +3 if `expiresIn <= 5`, drops to 0 after expiration, capped at 50.
+  - Magic Pill: `expiresIn` and `benefit` unchanged after N calls.
+  - Edge cases: benefit at 0 (never goes below), benefit at 50 (never goes above).
 
-## Phase 3 — Refactor de `updateBenefitValue`
+## Phase 3 — Refactor `updateBenefitValue`
 
-Objectif : sortir de la pyramide de `if` imbriqués sans changer le comportement observable.
+Goal: escape the nested `if` pyramid without changing observable behavior.
 
-- Utiliser le pattern stratégie par nom de drogue (map `name -> handler`), ou une méthode `updateDrug(drug)` avec des branches à plat (early return / guard clauses) plutôt que des ifs imbriqués.
-- [x] Ajouter une courte ADR dans `docs/adr/` documentant le choix d'utiliser le pattern stratégie. — **ADR03**
+- Use a strategy pattern by drug name (map `name -> handler`), or an `updateDrug(drug)` method with flat branches (early return / guard clauses) rather than nested ifs.
+- [x] Add a short ADR in `docs/adr/` documenting the choice to use the strategy pattern. — **ADR03**
 
-**Méthodologie :**
-- Faire des modifications étape par étape.
-- Garder `Drug`/`Pharmacy` avec la même API publique (garantie par les tests).
-- Après chaque étape de refactor, relancer `yarn test` (tests Phase 1 + 2 doivent rester verts) et `yarn lint`.
-- Commiter souvent.
+**Methodology:**
+- Make changes step by step.
+- Keep `Drug`/`Pharmacy` with the same public API (guaranteed by the tests).
+- After each refactor step, rerun `yarn test` (Phase 1 + 2 tests must stay green) and `yarn lint`.
+- Commit often.
 
-## Phase 4 — Confirmation des spécifications du Dafalgan
+## Phase 4 — Confirming the Dafalgan spec
 
-La spec contient deux règles qui se recoupent sur Dafalgan, d'où une ambiguïté à lever avant implémentation :
+The spec contains two overlapping rules for Dafalgan, hence an ambiguity to resolve before implementation:
 
-1. Base normale :
+1. Normal baseline:
    - For all drugs, at the end of each day our system lowers both values for every drug.
    - "Dafalgan" degrades in Benefit twice as fast as normal drugs.
 
-   Cela suppose que le décrément de base d'une drogue "normale" est de 1/jour. Ce point n'est pas garanti par la spec ; nous le prenons comme hypothèse de travail pour l'exercice.
+   This assumes the baseline decrement of a "normal" drug is 1/day. This is not guaranteed by the spec; we take it as a working assumption for the exercise.
 
-2. Règle d'expiration :
+2. Expiration rule:
    - Once the expiration date has passed, Benefit degrades twice as fast.
    - "Dafalgan" degrades in Benefit twice as fast as normal drugs.
 
-   Question ouverte : une fois expirée, les deux règles "2x plus vite" se cumulent-elles pour Dafalgan (-4/jour), ou s'excluent-elles (-2/jour) ?
+   Open question: once expired, do the two "2x faster" rules stack for Dafalgan (-4/day), or are they mutually exclusive (-2/day)?
 
-### Nouvelle spécification (à valider avec le produit)
+### New spec (to be validated with product)
 
-Interprétation retenue pour l'exercice : la dégradation "2x plus vite" de Dafalgan s'applique sur la base normale (-1/jour), et se cumule avec la règle générale "expiré = 2x plus vite".
+Interpretation chosen for the exercise: Dafalgan's "2x faster" degradation applies on top of the normal baseline (-1/day), and stacks with the general "expired = 2x faster" rule.
 
-| État              | Dégradation `benefit` |
+| State             | `benefit` degradation |
 |-------------------|------------------------|
-| Avant expiration  | -2/jour                |
-| Après expiration  | -4/jour                |
-| Plancher          | jamais négatif (min 0) |
+| Before expiration | -2/day                 |
+| After expiration  | -4/day                 |
+| Floor             | never negative (min 0) |
 
-À confirmer avec le produit avant mise en prod : cette lecture suppose que les deux règles "2x plus vite" (spécifique Dafalgan + expiration) se multiplient plutôt que de s'exclure.
+To confirm with product before shipping: this reading assumes the two "2x faster" rules (Dafalgan-specific + expiration) multiply rather than being mutually exclusive.
 
-## Phase 5 — Implémentation de Dafalgan
+## Phase 5 — Implementing Dafalgan
 
-- [x] Créer des tests pour Dafalgan qui reprennent les 3 cas (-2/jour avant expiration, -4/jour après, jamais négatif).
-- [x] Implémentation :
-  1. Ajouter une instance `new Drug("Dafalgan", ...)` dans `index.js`, **à la fin** du tableau `drugs`, pour ne pas décaler les entrées existantes dans `output.json`.
-  2. Ajouter la règle Dafalgan dans la logique refactorée.
-  3. Régénérer `output.json` via `yarn start` et vérifier que les 4 premières entrées de chaque jour sont inchangées, seule une 5e entrée (Dafalgan) apparaît.
-  4. Modifier les tests pour Dafalgan pour qu'ils aient la même structure que les autres tests.
+- [x] Create tests for Dafalgan covering the 3 cases (-2/day before expiration, -4/day after, never negative).
+- [x] Implementation:
+  1. Add a `new Drug("Dafalgan", ...)` instance in `index.js`, **at the end** of the `drugs` array, so as not to shift the existing entries in `output.json`.
+  2. Add the Dafalgan rule to the refactored logic.
+  3. Regenerate `output.json` via `yarn start` and verify that the first 4 entries of each day are unchanged, with only a 5th entry (Dafalgan) appearing.
+  4. Update the Dafalgan tests so they follow the same structure as the other tests.
 
-## Phase 6 — Vérification
+## Phase 6 — Verification
 
-1. `yarn lint` et `yarn test` doivent passer sans erreur.
-2. `yarn start` régénère `output.json` sans diff sur les drogues existantes.
-3. Relecture rapide du diff global (`git diff main`) pour repérer tout changement non intentionnel de l'API publique.
+1. `yarn lint` and `yarn test` must pass without error.
+2. `yarn start` regenerates `output.json` with no diff on the existing drugs.
+3. Quick review of the overall diff (`git diff main`) to spot any unintended change to the public API.
 
 ---
 
-## Résumé des risques à surveiller
+## Summary of risks to watch
 
-- Casser l'API publique (`Drug`, `Pharmacy`) par inadvertance en renommant/supprimant des propriétés ou méthodes existantes.
-- Modifier l'ordre ou les valeurs initiales des drogues existantes dans `index.js`, ce qui changerait `output.json` au-delà de l'ajout de Dafalgan.
+- Accidentally breaking the public API (`Drug`, `Pharmacy`) by renaming/removing existing properties or methods.
+- Changing the order or initial values of the existing drugs in `index.js`, which would change `output.json` beyond the addition of Dafalgan.

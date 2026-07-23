@@ -9,7 +9,7 @@ const initialDrugs = [
   new Drug(DRUG_NAMES.MAGIC_PILL, 15, 40),
 ];
 
-describe("Pharmacy (anti-régression pré-refactor sur les 4 drogues existantes)", () => {
+describe("Pharmacy (pre-refactor anti-regression on the 4 existing drugs)", () => {
   const pharmacy = new Pharmacy(initialDrugs);
   const log = [];
   for (let elapsedDays = 0; elapsedDays < 30; elapsedDays++) {
@@ -17,7 +17,7 @@ describe("Pharmacy (anti-régression pré-refactor sur les 4 drogues existantes)
   }
 
   it.each(initialDrugs.map((drug) => drug.name))(
-    "%s : historique sur 30 jours identique à la baseline figée dans `output.json`",
+    "%s: 30-day history matches the baseline frozen in `output.json`",
     (name) => {
       const actual = log.map((day) => day.find((drug) => drug.name === name));
       const expected = baseline.result.map((day) =>
