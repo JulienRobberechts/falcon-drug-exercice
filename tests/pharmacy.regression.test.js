@@ -1,12 +1,12 @@
-import { Drug, Pharmacy } from "../pharmacy";
+import { Drug, Pharmacy, DRUG_NAMES } from "../pharmacy";
 
 import baseline from "../output.json";
 
 const initialDrugs = [
   new Drug("Doliprane", 20, 30),
-  new Drug("Herbal Tea", 10, 5),
-  new Drug("Fervex", 12, 35),
-  new Drug("Magic Pill", 15, 40),
+  new Drug(DRUG_NAMES.HERBAL_TEA, 10, 5),
+  new Drug(DRUG_NAMES.FERVEX, 12, 35),
+  new Drug(DRUG_NAMES.MAGIC_PILL, 15, 40),
 ];
 
 describe("Pharmacy (anti-régression pré-refactor sur les 4 drogues existantes)", () => {

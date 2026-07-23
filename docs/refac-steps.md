@@ -49,7 +49,7 @@
 Objectif : sortir de la pyramide de `if` imbriqués sans changer le comportement observable.
 
 - Utiliser le pattern stratégie par nom de drogue (map `name -> handler`), ou une méthode `updateDrug(drug)` avec des branches à plat (early return / guard clauses) plutôt que des ifs imbriqués.
-- [ ] Ajouter une courte ADR dans `docs/adr/` documentant le choix d'utiliser le pattern stratégie. — **ADR03**
+- [x] Ajouter une courte ADR dans `docs/adr/` documentant le choix d'utiliser le pattern stratégie. — **ADR03**
 
 **Méthodologie :**
 - Faire des modifications étape par étape.

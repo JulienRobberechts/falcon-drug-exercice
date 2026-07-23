@@ -1,4 +1,4 @@
-import { Drug, Pharmacy } from "../pharmacy";
+import { Drug, Pharmacy, DRUG_NAMES } from "../pharmacy";
 
 const update = (drug, times = 1) => {
   const pharmacy = new Pharmacy([drug]);
@@ -28,52 +28,52 @@ describe("Pharmacy (règles métier par drogue et cas limites)", () => {
 
   describe("Herbal Tea", () => {
     it("le benefit augmente avec l'âge", () => {
-      const drug = update(new Drug("Herbal Tea", 5, 10));
-      expect(drug).toEqual(new Drug("Herbal Tea", 4, 11));
+      const drug = update(new Drug(DRUG_NAMES.HERBAL_TEA, 5, 10));
+      expect(drug).toEqual(new Drug(DRUG_NAMES.HERBAL_TEA, 4, 11));
     });
 
     it("le benefit augmente 2x plus vite une fois expirée", () => {
-      const drug = update(new Drug("Herbal Tea", -1, 10));
+      const drug = update(new Drug(DRUG_NAMES.HERBAL_TEA, -1, 10));
       expect(drug.benefit).toBe(12);
     });
 
     it("le benefit ne dépasse jamais 50, même expirée", () => {
-      const drug = update(new Drug("Herbal Tea", -5, 49));
+      const drug = update(new Drug(DRUG_NAMES.HERBAL_TEA, -5, 49));
       expect(drug.benefit).toBe(50);
     });
   });
 
   describe("Fervex", () => {
     it("le benefit augmente de 1 quand expiresIn > 10", () => {
-      const drug = update(new Drug("Fervex", 15, 30));
-      expect(drug).toEqual(new Drug("Fervex", 14, 31));
+      const drug = update(new Drug(DRUG_NAMES.FERVEX, 15, 30));
+      expect(drug).toEqual(new Drug(DRUG_NAMES.FERVEX, 14, 31));
     });
 
     it("le benefit augmente de 2 quand expiresIn <= 10", () => {
-      const drug = update(new Drug("Fervex", 10, 30));
+      const drug = update(new Drug(DRUG_NAMES.FERVEX, 10, 30));
       expect(drug.benefit).toBe(32);
     });
 
     it("le benefit augmente de 3 quand expiresIn <= 5", () => {
-      const drug = update(new Drug("Fervex", 5, 30));
+      const drug = update(new Drug(DRUG_NAMES.FERVEX, 5, 30));
       expect(drug.benefit).toBe(33);
     });
 
     it("le benefit tombe à 0 dès que la drogue est expirée", () => {
-      const drug = update(new Drug("Fervex", 0, 30));
+      const drug = update(new Drug(DRUG_NAMES.FERVEX, 0, 30));
       expect(drug.benefit).toBe(0);
     });
 
     it("le benefit ne dépasse jamais 50", () => {
-      const drug = update(new Drug("Fervex", 3, 48));
+      const drug = update(new Drug(DRUG_NAMES.FERVEX, 3, 48));
       expect(drug.benefit).toBe(50);
     });
   });
 
   describe("Magic Pill", () => {
     it("expiresIn et benefit restent inchangés après plusieurs jours", () => {
-      const drug = update(new Drug("Magic Pill", 15, 40), 10);
-      expect(drug).toEqual(new Drug("Magic Pill", 15, 40));
+      const drug = update(new Drug(DRUG_NAMES.MAGIC_PILL, 15, 40), 10);
+      expect(drug).toEqual(new Drug(DRUG_NAMES.MAGIC_PILL, 15, 40));
     });
   });
 });
