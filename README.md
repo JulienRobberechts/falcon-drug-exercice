@@ -17,7 +17,7 @@ Démarche suivie :
 Nouveaux fichiers :
 
 - les fichiers de tests ont été déplacés dans `tests`
-- `docs/refac-steps.md` — plan de refactoring
+- [`docs/refac-steps.md`](docs/refac-steps.md) — plan de refactoring
 - `docs/adr/ADR01` à `ADR04` — décisions de design pour historique.
 
 Merci beaucoup aux développeurs et développeuses qui prendront le temps de relire ce travail — bonne lecture, et n'hésitez pas à me faire part de vos retours !
