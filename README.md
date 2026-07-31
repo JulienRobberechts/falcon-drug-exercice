@@ -25,6 +25,8 @@ New files:
 
 Many thanks to the developers who take the time to review this work — enjoy the read, and feel free to share your feedback!
 
+> **Update note**: reviewers gave feedback that the benefit calculation logic was hard to follow. I agree, so I proposed an improvement based on pure functions — see [ADR05](docs/adr/ADR05-module-level-pure-functions.md).
+
 # Take-Home Test Specification
 
 You are a new developer in the Falcon team, and your first job is to add a feature to an old existing piece of code.
