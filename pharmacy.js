@@ -4,6 +4,23 @@ const MAX_BENEFIT = 50;
 const clampBenefit = (benefit) =>
   Math.min(MAX_BENEFIT, Math.max(MIN_BENEFIT, benefit));
 
+export const calcNextRawBenefit = (
+  rule,
+  benefit,
+  expired,
+  benefitDeltaBeforeExpiry,
+) => {
+  const hasFixedBenefitAfterExpiry = rule.benefitValueAfterExpiry !== undefined;
+
+  if (expired && hasFixedBenefitAfterExpiry)
+    return rule.benefitValueAfterExpiry;
+
+  if (expired)
+    return benefit + rule.benefitDeltaAfterExpiry;
+
+  return benefit + benefitDeltaBeforeExpiry;
+}
+
 export function getBenefitDeltaBeforeExpiry(rule, previousExpiresIn) {
   return typeof rule.benefitDeltaBeforeExpiry === "function"
     ? rule.benefitDeltaBeforeExpiry(previousExpiresIn)
@@ -59,21 +76,22 @@ export class Drug {
 
   update() {
     const rule = DRUG_RULES[this.name] || DEFAULT_RULE;
+
     const benefitDeltaBeforeExpiry =
       getBenefitDeltaBeforeExpiry(rule, this.expiresIn);
 
-    this.expiresIn += rule.expiresInDeltaPerDay;
-    const expired = this.expiresIn < 0;
+    const nextExpiresIn = this.expiresIn + rule.expiresInDeltaPerDay;
+    const expired = nextExpiresIn < 0;
 
-    this.benefit =
-      expired && rule.benefitValueAfterExpiry !== undefined
-        ? clampBenefit(rule.benefitValueAfterExpiry)
-        : clampBenefit(
-            this.benefit +
-              (expired
-                ? rule.benefitDeltaAfterExpiry
-                : benefitDeltaBeforeExpiry),
-          );
+    const nextRawBenefit = calcNextRawBenefit(
+      rule,
+      this.benefit,
+      expired,
+      benefitDeltaBeforeExpiry,
+    );
+
+    this.expiresIn = nextExpiresIn;
+    this.benefit = clampBenefit(nextRawBenefit);
   }
 }
 
