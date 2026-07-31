@@ -12,7 +12,9 @@ describe("getBenefitDeltaBeforeExpiry (pure function)", () => {
   });
 
   it("is deterministic: same inputs always produce the same output", () => {
-    const rule = { benefitDeltaBeforeExpiry: (expiresIn) => (expiresIn <= 5 ? 3 : 1) };
+    const rule = {
+      benefitDeltaBeforeExpiry: (expiresIn) => (expiresIn <= 5 ? 3 : 1),
+    };
     expect(getBenefitDeltaBeforeExpiry(rule, 5)).toBe(
       getBenefitDeltaBeforeExpiry(rule, 5),
     );
