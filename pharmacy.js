@@ -4,6 +4,12 @@ const MAX_BENEFIT = 50;
 const clampBenefit = (benefit) =>
   Math.min(MAX_BENEFIT, Math.max(MIN_BENEFIT, benefit));
 
+export function getBenefitDeltaBeforeExpiry(rule, previousExpiresIn) {
+  return typeof rule.benefitDeltaBeforeExpiry === "function"
+    ? rule.benefitDeltaBeforeExpiry(previousExpiresIn)
+    : rule.benefitDeltaBeforeExpiry;
+}
+
 export const DRUG_NAMES = {
   HERBAL_TEA: "Herbal Tea",
   FERVEX: "Fervex",
@@ -54,9 +60,7 @@ export class Drug {
   update() {
     const rule = DRUG_RULES[this.name] || DEFAULT_RULE;
     const benefitDeltaBeforeExpiry =
-      typeof rule.benefitDeltaBeforeExpiry === "function"
-        ? rule.benefitDeltaBeforeExpiry(this.expiresIn)
-        : rule.benefitDeltaBeforeExpiry;
+      getBenefitDeltaBeforeExpiry(rule, this.expiresIn);
 
     this.expiresIn += rule.expiresInDeltaPerDay;
     const expired = this.expiresIn < 0;
